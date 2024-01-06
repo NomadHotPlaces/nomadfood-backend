@@ -109,7 +109,7 @@ yarn start:dev  # 개발 모드로 실행
 
 **2. 브랜치 생성**
 
-브랜치는 `feature/기능` 형식으로 생성합니다.
+브랜치는 `작성자명:feature/기능` 형식으로 생성합니다.
 
 ```bash
 git checkout -b feature/email-login
