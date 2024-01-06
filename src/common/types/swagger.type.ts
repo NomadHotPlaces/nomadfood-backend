@@ -7,6 +7,10 @@ type PropertyDecoratorOptionsType = {
   lengthOptions?: Parameters<typeof Length>[2];
 };
 
+export type SwaggerMethodDocType<T> = {
+  [K in keyof T]: (summary: string) => MethodDecorator;
+};
+
 export type SwaggerFieldDocType<T> = {
   [K in keyof T]?: (
     property?: string,
