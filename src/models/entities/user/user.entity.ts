@@ -15,11 +15,13 @@ export class User extends CommonIdEntity {
 
   @Column({
     length: USER.PASSWORD.MAX_LENGTH,
+    nullable: true,
     select: false,
   })
   password: string;
 
   @Column({
+    unique: true,
     length: USER.USERNAME.MAX_LENGTH,
   })
   username: string;

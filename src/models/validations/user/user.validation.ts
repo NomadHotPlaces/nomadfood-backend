@@ -1,12 +1,11 @@
 import { applyDecorators } from '@nestjs/common';
 
-import { IsEmail, IsString, Length, Matches, MaxLength } from 'class-validator';
+import { IsEmail, IsString, Length, Matches } from 'class-validator';
 
 import {
   SwaggerEntityDocType,
   getIsStringMessage,
   getLengthMessage,
-  getMaxLengthMessage,
   getStringTypeMessage,
 } from '@/common';
 
@@ -19,11 +18,15 @@ export const UserValidation: SwaggerEntityDocType<User> = {
 
     return applyDecorators(
       IsEmail({}, { message: getStringTypeMessage({ property }) }),
-      MaxLength(USER.EMAIL.MAX_LENGTH, {
-        message: getMaxLengthMessage({
+      Length(USER.EMAIL.MIN_LENGTH, USER.EMAIL.MAX_LENGTH, {
+        message: getLengthMessage({
           property,
+          minLength: USER.EMAIL.MIN_LENGTH,
           maxLength: USER.EMAIL.MAX_LENGTH,
         }),
+      }),
+      Matches(USER.EMAIL.REG_EXP, {
+        message: `${property}에는 영문 대소문자, 숫자, 특수문자(@, ., _, -)만 사용할 수 있습니다.`,
       }),
     );
   },
@@ -33,7 +36,7 @@ export const UserValidation: SwaggerEntityDocType<User> = {
 
     return applyDecorators(
       Matches(USER.PASSWORD.REG_EXP, {
-        message: `${property}의 길이는 ${USER.PASSWORD.MIN_LENGTH}자 이상, ${USER.PASSWORD.MAX_LENGTH}자 이하이며, 숫자를 포함해야합니다.`,
+        message: `${property}의 길이는 ${USER.PASSWORD.MIN_LENGTH}자 이상, ${USER.PASSWORD.MAX_LENGTH}자 이하이며, 영문과 숫자 및 특수기호를 포함해야합니다.`,
       }),
     );
   },
