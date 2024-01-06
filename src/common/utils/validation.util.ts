@@ -29,7 +29,7 @@ export function getStringTypeMessage({
   property,
   description,
   example,
-}: IMessageOptions) {
+}: IMessageOptions): string {
   const comma = description && example ? ', ' : '';
   const exampleWithPrefix = example ? `예시: ${example}` : '';
   const suffix =
@@ -43,7 +43,7 @@ export function getStringTypeMessage({
 export function getMaxLengthMessage({
   property,
   maxLength,
-}: IPropsWithMaxLength) {
+}: IPropsWithMaxLength): string {
   return `${property}의 길이는 ${maxLength}자 이하여야합니다.`;
 }
 
@@ -51,33 +51,35 @@ export function getLengthMessage({
   property,
   minLength,
   maxLength,
-}: PropsWithLengthType) {
+}: PropsWithLengthType): string {
   return `${property}의 길이는 ${minLength}자 이상, ${maxLength}자 이하여야합니다.`;
 }
 
 // 타입 관련 함수
-function getTypeCheckMessage(property: string, type: string) {
+function getTypeCheckMessage(property: string, type: string): string {
   return `${property} 필드는 ${type}여야합니다.`;
 }
 
-export function getIsStringMessage({ property }: IPropsWithPropertyName) {
+export function getIsStringMessage({
+  property,
+}: IPropsWithPropertyName): string {
   return getTypeCheckMessage(property, '문자열');
 }
 
-export function getIsIntMessage({ property }: IPropsWithPropertyName) {
+export function getIsIntMessage({ property }: IPropsWithPropertyName): string {
   return getTypeCheckMessage(property, '정수형');
 }
 
 // String 타입 관련 함수
-export function getIsUrlMessage({ property }: IPropsWithPropertyName) {
+export function getIsUrlMessage({ property }: IPropsWithPropertyName): string {
   return getTypeCheckMessage(property, 'URL 형식');
 }
 
 // 값 크기 관련 함수
-export function getMinMessage({ property, min }: IPropsWithMin) {
+export function getMinMessage({ property, min }: IPropsWithMin): string {
   return `${property}의 최소값은 ${min}입니다.`;
 }
 
-export function getMaxMessage({ property, max }: IPropsWithMax) {
+export function getMaxMessage({ property, max }: IPropsWithMax): string {
   return `${property}의 최소값은 ${max}입니다.`;
 }

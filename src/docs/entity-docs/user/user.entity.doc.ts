@@ -7,11 +7,11 @@ import { SwaggerDoc } from '@/common';
 import { SNSProvider, USER } from '@/models';
 
 export const UserDoc = {
-  userId() {
+  userId(): PropertyDecorator {
     return applyDecorators(SwaggerDoc.id('사용자 식별자'));
   },
 
-  email() {
+  email(): PropertyDecorator {
     return applyDecorators(
       ApiProperty({
         description: USER.EMAIL.KR,
@@ -20,7 +20,7 @@ export const UserDoc = {
     );
   },
 
-  password() {
+  password(): PropertyDecorator {
     return applyDecorators(
       ApiProperty({
         description: USER.PASSWORD.KR,
@@ -29,7 +29,7 @@ export const UserDoc = {
     );
   },
 
-  username() {
+  username(): PropertyDecorator {
     return applyDecorators(
       ApiProperty({
         description: USER.USERNAME.KR,
@@ -38,7 +38,7 @@ export const UserDoc = {
     );
   },
 
-  name() {
+  name(): PropertyDecorator {
     return applyDecorators(
       ApiProperty({
         description: USER.NAME.KR,
@@ -47,7 +47,7 @@ export const UserDoc = {
     );
   },
 
-  role() {
+  role(): PropertyDecorator {
     return applyDecorators(
       ApiProperty({
         description: USER.ROLE.KR,
@@ -56,7 +56,7 @@ export const UserDoc = {
     );
   },
 
-  provider() {
+  provider(): PropertyDecorator {
     return applyDecorators(
       Column({
         length: USER.PROVIDER.MAX_LENGTH,
@@ -65,7 +65,7 @@ export const UserDoc = {
     );
   },
 
-  snsId() {
+  snsId(): PropertyDecorator {
     return applyDecorators(
       Column({
         nullable: true,

@@ -1,14 +1,26 @@
 import { DynamicModule, Provider } from '@nestjs/common';
 import { getDataSourceToken } from '@nestjs/typeorm';
 
-import { DataSource } from 'typeorm';
+import {
+  DataSource,
+  EntityManager,
+  EntityTarget,
+  ObjectLiteral,
+  QueryRunner,
+  Repository,
+} from 'typeorm';
 
 import { TYPEORM_ENTITY_REPOSITORY } from '../decorator';
 
 export class CustomTypeOrmModule {
-  public static forCustomRepository<T extends new (...args: any[]) => any>(
-    repositories: T[],
-  ): DynamicModule {
+  public static forCustomRepository<
+    Entity extends ObjectLiteral,
+    T extends new (
+      target: EntityTarget<Entity>,
+      manager: EntityManager,
+      queryRunner?: QueryRunner,
+    ) => Repository<Entity>,
+  >(repositories: T[]): DynamicModule {
     const providers: Provider[] = [];
 
     for (const repository of repositories) {
@@ -21,13 +33,13 @@ export class CustomTypeOrmModule {
       providers.push({
         inject: [getDataSourceToken()],
         provide: repository,
-        useFactory: (dataSource: DataSource): typeof repository => {
-          const baseRepository = dataSource.getRepository<any>(entity);
+        useFactory: (dataSource: DataSource): T => {
+          const baseRepository = dataSource.getRepository<Entity>(entity);
           return new repository(
             baseRepository.target,
             baseRepository.manager,
             baseRepository.queryRunner,
-          );
+          ) as unknown as T;
         },
       });
     }

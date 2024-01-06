@@ -2,7 +2,7 @@ import { applyDecorators } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export const SwaggerDoc = {
-  id(description: string) {
+  id(description: string): PropertyDecorator {
     return applyDecorators(
       ApiProperty({
         description,
@@ -11,7 +11,7 @@ export const SwaggerDoc = {
     );
   },
 
-  createdAt() {
+  createdAt(): PropertyDecorator {
     return applyDecorators(
       ApiPropertyOptional({
         example: '2024-01-05 11:23:43',
@@ -20,7 +20,7 @@ export const SwaggerDoc = {
     );
   },
 
-  updatedAt() {
+  updatedAt(): PropertyDecorator {
     return applyDecorators(
       ApiPropertyOptional({
         example: '2024-01-05 22:59:33',
@@ -29,7 +29,7 @@ export const SwaggerDoc = {
     );
   },
 
-  deletedAt() {
+  deletedAt(): PropertyDecorator {
     return applyDecorators(
       ApiPropertyOptional({
         example: '2024-01-06 14:59:33',

@@ -8,7 +8,7 @@ export const USER = {
     KR: '비밀번호',
     MIN_LENGTH: 8,
     MAX_LENGTH: 255,
-    get REG_EXP() {
+    get REG_EXP(): RegExp {
       return new RegExp(
         `^(?=.*[0-9]).{${this.MIN_LENGTH},${this.MAX_LENGTH}}$`,
       );

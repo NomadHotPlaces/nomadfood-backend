@@ -14,8 +14,8 @@ import { IResponseEntity } from '../interfaces';
 export class SuccessInterceptor implements NestInterceptor {
   intercept(
     context: ExecutionContext,
-    next: CallHandler<any>,
-  ): Observable<any> | Promise<Observable<any>> {
+    next: CallHandler<unknown>,
+  ): Observable<IResponseEntity> | Promise<Observable<IResponseEntity>> {
     const response = context.switchToHttp().getResponse<Response>();
     const status: number = response.statusCode;
 

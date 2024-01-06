@@ -1,7 +1,7 @@
-export interface IResponseEntity {
+export interface IResponseEntity<T = unknown> {
   success: boolean;
   statusCode: number;
-  data?: any;
+  data?: T;
 }
 
 export interface IErrorResponse {
