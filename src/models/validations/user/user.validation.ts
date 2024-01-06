@@ -67,7 +67,7 @@ export const UserValidation: SwaggerEntityDocType<User> = {
         }),
       }),
       Matches(USER.NAME.REG_EXP, {
-        message: `${property}에는 영문 대소문자 외 다른 문자를 사용할 수 없습니다.`,
+        message: `${property}에는 한글 외 다른 문자를 사용할 수 없습니다.`,
       }),
     );
   },
