@@ -40,6 +40,13 @@ export class AuthService {
 
     throwExceptionOrNot(!existsUser, EXCEPTION.AUTH.DUPLICATE_EMAIL);
 
+    const existsUsername: User = await this.userRepository.findOne({
+      where: { username },
+      withDeleted: true,
+    });
+
+    throwExceptionOrNot(!existsUsername, EXCEPTION.AUTH.DUPLICATE_USERNAME);
+
     try {
       await this.userRepository.insert(
         this.userRepository.create({

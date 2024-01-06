@@ -43,7 +43,7 @@ describe('AuthService', () => {
   });
 
   describe('join', () => {
-    it('존재하지 않는 이메일이라면 새로운 계정을 생성합니다.', async () => {
+    it('존재하지 않는 이메일과 닉네임이라면 새로운 계정을 생성합니다.', async () => {
       const joinForm: JoinForm = {
         email: 'test@example.com',
         password: 'Test1234!',
@@ -66,6 +66,10 @@ describe('AuthService', () => {
 
       expect(userRepository.findOne).toHaveBeenCalledWith({
         where: { email: joinForm.email },
+        withDeleted: true,
+      });
+      expect(userRepository.findOne).toHaveBeenCalledWith({
+        where: { username: joinForm.username },
         withDeleted: true,
       });
       expect(bcrypt.hash).toHaveBeenCalledWith(
