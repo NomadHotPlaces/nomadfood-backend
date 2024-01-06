@@ -33,7 +33,7 @@ export const UserDoc = {
     return applyDecorators(
       ApiProperty({
         description: USER.USERNAME.KR,
-        example: 'user123',
+        example: 'UsEr123',
       }),
     );
   },
