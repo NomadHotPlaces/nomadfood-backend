@@ -5,3 +5,4 @@ export * from './exception';
 export * from './interceptor';
 export * from './interfaces';
 export * from './service';
+export * from './utils';
