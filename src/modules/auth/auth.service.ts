@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 
 import { handleException, throwExceptionOrNot } from '@/common';
 import { EXCEPTION } from '@/docs';
-import { User, UserRepository, UserRole } from '@/models';
+import { USER, User, UserRepository, UserRole } from '@/models';
 
 import { JoinForm } from './dtos';
 
@@ -16,6 +16,22 @@ export class AuthService {
 
   async join(joinForm: JoinForm): Promise<void> {
     const { email, password, username, name } = joinForm;
+
+    if (!email) {
+      throwExceptionOrNot(false, EXCEPTION.AUTH.MISSING_EMAIL);
+    }
+
+    if (!password) {
+      throwExceptionOrNot(false, EXCEPTION.AUTH.MISSING_PASSWORD);
+    }
+
+    if (!USER.USERNAME.REG_EXP.test(username)) {
+      throwExceptionOrNot(false, EXCEPTION.AUTH.INVALID_USERNAME);
+    }
+
+    if (!USER.NAME.REG_EXP.test(name)) {
+      throwExceptionOrNot(false, EXCEPTION.AUTH.INVALID_NAME);
+    }
 
     const existsUser: User = await this.userRepository.findOne({
       where: { email },
@@ -35,8 +51,8 @@ export class AuthService {
         }),
       );
     } catch (error) {
-      console.log(error);
       handleException(EXCEPTION.AUTH.JOIN_ERROR);
+      throw error;
     }
   }
 }
