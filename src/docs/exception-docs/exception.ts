@@ -6,6 +6,13 @@ export interface IExceptionObject {
 }
 
 export const EXCEPTION = {
+  COMMON: {
+    INTERNAL_SERVER_ERROR: {
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      message: '알 수 없는 서버 오류가 발생했습니다.',
+    },
+  },
+
   AUTH: {
     DUPLICATE_EMAIL: {
       status: HttpStatus.BAD_REQUEST,
