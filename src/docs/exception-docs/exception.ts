@@ -14,6 +14,10 @@ export const EXCEPTION = {
   },
 
   AUTH: {
+    BAD_AUTH_REQUEST: {
+      status: HttpStatus.BAD_REQUEST,
+      message: '잘못된 인증 요청입니다.',
+    },
     DUPLICATE_EMAIL: {
       status: HttpStatus.BAD_REQUEST,
       message: '이미 존재하는 이메일입니다.',
