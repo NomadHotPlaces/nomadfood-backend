@@ -8,7 +8,7 @@ import { handleException, throwExceptionOrNot } from '@/common';
 import { AuthConfigType } from '@/configs';
 import { CONFIG } from '@/constants';
 import { EXCEPTION } from '@/docs';
-import { USER, User, UserRepository, UserRole } from '@/models';
+import { User, UserRepository, UserRole } from '@/models';
 
 import { JoinForm } from './dtos';
 import { IJwtPayload } from './interface';
@@ -26,28 +26,12 @@ export class AuthService {
   async join(joinForm: JoinForm): Promise<void> {
     const { email, password, username, name } = joinForm;
 
-    if (!email) {
-      throwExceptionOrNot(false, EXCEPTION.AUTH.MISSING_EMAIL);
-    }
-
-    if (!password) {
-      throwExceptionOrNot(false, EXCEPTION.AUTH.MISSING_PASSWORD);
-    }
-
-    if (!USER.USERNAME.REG_EXP.test(username)) {
-      throwExceptionOrNot(false, EXCEPTION.AUTH.INVALID_USERNAME);
-    }
-
-    if (!USER.NAME.REG_EXP.test(name)) {
-      throwExceptionOrNot(false, EXCEPTION.AUTH.INVALID_NAME);
-    }
-
-    const existsUser: User = await this.userRepository.findOne({
+    const existsEmail: User = await this.userRepository.findOne({
       where: { email },
       withDeleted: true,
     });
 
-    throwExceptionOrNot(!existsUser, EXCEPTION.AUTH.DUPLICATE_EMAIL);
+    throwExceptionOrNot(!existsEmail, EXCEPTION.AUTH.DUPLICATE_EMAIL);
 
     const existsUsername: User = await this.userRepository.findOne({
       where: { username },
@@ -94,5 +78,36 @@ export class AuthService {
       expiresIn: this.configService.get<AuthConfigType>(CONFIG.AUTH)
         .accessTokenExpiresIn,
     });
+  }
+
+  async generateRefreshToken({ id }: IJwtPayload): Promise<string> {
+    const payload: IJwtPayload = { id };
+    console.log('페이로드: ', payload);
+
+    try {
+      const refreshToken = this.jwtService.sign(payload, {
+        secret: this.configService.get<AuthConfigType>(CONFIG.AUTH)
+          .accessTokenSecret,
+        expiresIn: this.configService.get<AuthConfigType>(CONFIG.AUTH)
+          .accessTokenExpiresIn,
+      });
+
+      console.log('리프레시 토큰: ', refreshToken);
+
+      const hashedRefreshToken = await bcrypt.hash(refreshToken, AUTH.SALT);
+      console.log('해시된 리프레시 토큰: ', hashedRefreshToken);
+
+      const result = await this.userRepository.update(id, {
+        refreshToken: hashedRefreshToken,
+      });
+
+      console.log('액세스 토큰 업데이트 결과: ', result);
+
+      throwExceptionOrNot(result.affected, EXCEPTION.AUTH.REFRESH_FAILURE);
+
+      return refreshToken;
+    } catch (error) {
+      handleException(EXCEPTION.AUTH.JWT_ERROR);
+    }
   }
 }

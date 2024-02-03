@@ -20,15 +20,19 @@ export const EXCEPTION = {
     },
     DUPLICATE_EMAIL: {
       status: HttpStatus.BAD_REQUEST,
-      message: '이미 존재하는 이메일입니다.',
+      message: '이미 사용중인 이메일입니다.',
     },
     DUPLICATE_USERNAME: {
       status: HttpStatus.BAD_REQUEST,
-      message: '이미 존재하는 닉네임입니다.',
+      message: '이미 사용중인 닉네임입니다.',
     },
     JOIN_ERROR: {
       status: HttpStatus.INTERNAL_SERVER_ERROR,
       message: '회원가입 중 알 수 없는 오류가 발생했습니다.',
+    },
+    JWT_ERROR: {
+      status: HttpStatus.BAD_REQUEST,
+      message: '토큰 발급 중 오류가 발생했습니다.',
     },
     MISSING_EMAIL: {
       status: HttpStatus.BAD_REQUEST,
@@ -45,6 +49,10 @@ export const EXCEPTION = {
     INVALID_NAME: {
       status: HttpStatus.BAD_REQUEST,
       message: '잘못된 형식의 이름입니다.',
+    },
+    REFRESH_FAILURE: {
+      status: HttpStatus.BAD_REQUEST,
+      message: 'Refresh 토큰 갱신에 실패했습니다.',
     },
   },
 };

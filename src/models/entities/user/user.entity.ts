@@ -48,4 +48,10 @@ export class User extends CommonIdEntity {
     nullable: true,
   })
   snsId: string;
+
+  @Column({
+    nullable: true,
+    select: false,
+  })
+  refreshToken: string;
 }
