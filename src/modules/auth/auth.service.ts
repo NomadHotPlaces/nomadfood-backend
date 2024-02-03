@@ -10,7 +10,7 @@ import { CONFIG } from '@/constants';
 import { EXCEPTION } from '@/docs';
 import { User, UserRepository, UserRole } from '@/models';
 
-import { JoinForm } from './dtos';
+import { JoinRequestDto } from './dtos';
 import { IJwtPayload } from './interface';
 
 import { AUTH } from './auth.constant';
@@ -23,8 +23,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async join(joinForm: JoinForm): Promise<void> {
-    const { email, password, username, name } = joinForm;
+  async join(joinRequestDto: JoinRequestDto): Promise<void> {
+    const { email, password, username, name } = joinRequestDto;
 
     const existsEmail: User = await this.userRepository.findOne({
       where: { email },
@@ -82,7 +82,6 @@ export class AuthService {
 
   async generateRefreshToken({ id }: IJwtPayload): Promise<string> {
     const payload: IJwtPayload = { id };
-    console.log('페이로드: ', payload);
 
     try {
       const refreshToken = this.jwtService.sign(payload, {
@@ -92,16 +91,11 @@ export class AuthService {
           .accessTokenExpiresIn,
       });
 
-      console.log('리프레시 토큰: ', refreshToken);
-
       const hashedRefreshToken = await bcrypt.hash(refreshToken, AUTH.SALT);
-      console.log('해시된 리프레시 토큰: ', hashedRefreshToken);
 
       const result = await this.userRepository.update(id, {
         refreshToken: hashedRefreshToken,
       });
-
-      console.log('액세스 토큰 업데이트 결과: ', result);
 
       throwExceptionOrNot(result.affected, EXCEPTION.AUTH.REFRESH_FAILURE);
 

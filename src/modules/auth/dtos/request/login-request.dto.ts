@@ -1,6 +1,6 @@
 import { UserRequestDto } from '@/modules/users';
 
-export class LoginForm {
+export class LoginRequestDto {
   @UserRequestDto.email()
   email: string;
 

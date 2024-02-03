@@ -1,2 +1,2 @@
-export * from './join-form.dto';
-export * from './login-form.dto';
+export * from './join-request.dto';
+export * from './login-request.dto';
