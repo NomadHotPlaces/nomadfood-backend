@@ -11,7 +11,8 @@ import {
 import { SwaggerMethodDocType } from '@/common';
 
 import { EXCEPTION } from '@/docs/exception-docs';
-import { AuthController, LoginForm, LoginResponse } from '@/modules/auth';
+import { AuthController } from '@/modules/auth';
+import { LoginFormDoc, LoginResponseDoc } from '@/docs/dto-docs';
 
 export const AuthControllerDoc: SwaggerMethodDocType<AuthController> = {
   join(summary: string) {
@@ -36,11 +37,11 @@ export const AuthControllerDoc: SwaggerMethodDocType<AuthController> = {
           '입력받은 회원의 이메일과 비밀번호로 인증 과정을 거친 뒤 JWT를 발급합니다.',
       }),
       ApiBody({
-        type: LoginForm,
+        type: LoginFormDoc,
       }),
       ApiOkResponse({
         description: '로그인에 성공했습니다.',
-        type: LoginResponse,
+        type: LoginResponseDoc,
       }),
       ApiInternalServerErrorResponse({
         description: EXCEPTION.COMMON.INTERNAL_SERVER_ERROR.message,
