@@ -10,7 +10,7 @@ import { CONFIG } from '@/constants';
 import { EXCEPTION } from '@/docs';
 import { User, UserRepository, UserRole } from '@/models';
 
-import { JoinRequestDto } from './dtos';
+import { JoinForm } from './dtos';
 import { IJwtPayload } from './interface';
 
 import { AUTH } from './auth.constant';
@@ -23,8 +23,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async join(joinRequestDto: JoinRequestDto): Promise<void> {
-    const { email, password, username, name } = joinRequestDto;
+  async join(joinForm: JoinForm): Promise<void> {
+    const { email, password, username, name } = joinForm;
 
     const existsEmail: User = await this.userRepository.findOne({
       where: { email },
