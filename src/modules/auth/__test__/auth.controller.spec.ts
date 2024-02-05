@@ -36,6 +36,7 @@ describe('AuthController', () => {
         password: 'User1234!',
         username: 'UserName',
         name: '김테스트',
+        phone: '010-1234-5678',
       };
 
       (authService.join as jest.Mock).mockResolvedValue(undefined);

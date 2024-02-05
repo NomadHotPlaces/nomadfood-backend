@@ -25,6 +25,10 @@ export const UserRequestDto = {
     return applyDecorators(UserDoc.name(), UserValidation.name());
   },
 
+  phone(): PropertyDecorator {
+    return applyDecorators(UserDoc.phone(), UserValidation.phone());
+  },
+
   provider(): PropertyDecorator {
     return applyDecorators(UserDoc.provider(), UserValidation.provider());
   },

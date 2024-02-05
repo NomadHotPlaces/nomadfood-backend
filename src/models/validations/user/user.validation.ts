@@ -1,6 +1,12 @@
 import { applyDecorators } from '@nestjs/common';
 
-import { IsEmail, IsString, Length, Matches } from 'class-validator';
+import {
+  IsEmail,
+  IsMobilePhone,
+  IsString,
+  Length,
+  Matches,
+} from 'class-validator';
 
 import {
   SwaggerEntityDocType,
@@ -71,6 +77,23 @@ export const UserValidation: SwaggerEntityDocType<User> = {
       }),
       Matches(USER.NAME.REG_EXP, {
         message: `${property}에는 한글 외 다른 문자를 사용할 수 없습니다.`,
+      }),
+    );
+  },
+
+  phone(propertyName?: string) {
+    const property = propertyName || USER.PHONE.KR;
+
+    return applyDecorators(
+      IsMobilePhone(
+        'ko-KR',
+        {},
+        {
+          message: getStringTypeMessage({ property }),
+        },
+      ),
+      Matches(USER.PHONE.REG_EXP, {
+        message: `${property}는 01x-xxxx-xxxx 또는 01xxxxxxxxx 형식의 대한민국 연락처 표준에 맞게 입력해야 합니다.`,
       }),
     );
   },

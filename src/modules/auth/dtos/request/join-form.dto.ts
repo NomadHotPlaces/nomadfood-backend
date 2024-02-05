@@ -12,4 +12,7 @@ export class JoinForm {
 
   @UserRequestDto.name()
   name: string;
+
+  @UserRequestDto.phone()
+  phone: string;
 }
