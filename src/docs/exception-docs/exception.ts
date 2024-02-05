@@ -26,6 +26,10 @@ export const EXCEPTION = {
       status: HttpStatus.BAD_REQUEST,
       message: '이미 사용중인 닉네임입니다.',
     },
+    DUPLICATE_PHONE: {
+      status: HttpStatus.BAD_REQUEST,
+      message: '이미 사용중인 전화번호입니다.',
+    },
     JOIN_ERROR: {
       status: HttpStatus.INTERNAL_SERVER_ERROR,
       message: '회원가입 중 알 수 없는 오류가 발생했습니다.',

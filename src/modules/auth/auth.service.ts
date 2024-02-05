@@ -24,7 +24,7 @@ export class AuthService {
   ) {}
 
   async join(joinForm: JoinForm): Promise<void> {
-    const { email, password, username, name } = joinForm;
+    const { email, password, username, name, phone } = joinForm;
 
     const existsEmail: User = await this.userRepository.findOne({
       where: { email },
@@ -39,6 +39,14 @@ export class AuthService {
     });
 
     throwExceptionOrNot(!existsUsername, EXCEPTION.AUTH.DUPLICATE_USERNAME);
+
+    const cleanedPhoneValue: string = phone.replace(/-/g, '');
+    const existsUserWithPhone: User = await this.userRepository.findOne({
+      where: { phone: cleanedPhoneValue },
+      withDeleted: true,
+    });
+
+    throwExceptionOrNot(!existsUserWithPhone, EXCEPTION.AUTH.DUPLICATE_PHONE);
 
     try {
       await this.userRepository.insert(

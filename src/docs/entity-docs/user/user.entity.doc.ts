@@ -47,6 +47,15 @@ export const UserDoc = {
     );
   },
 
+  phone(): PropertyDecorator {
+    return applyDecorators(
+      ApiProperty({
+        description: USER.PHONE.KR,
+        example: '010-1234-5678',
+      }),
+    );
+  },
+
   role(): PropertyDecorator {
     return applyDecorators(
       ApiProperty({
