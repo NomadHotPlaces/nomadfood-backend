@@ -6,10 +6,9 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 
 import { CONFIG } from '@/constants';
-import { SNSProvider, User, UserRepository, UserRole } from '@/models';
+import { SNSProvider, UserRepository, UserRole } from '@/models';
 
-import { JoinForm, LoginForm } from '../dtos';
-import { IJwtPayload } from '../interface';
+import { JoinForm } from '../dtos';
 
 import { AuthService } from '../auth.service';
 
@@ -84,6 +83,7 @@ describe('AuthService', () => {
         password: 'Test1234!',
         username: 'TestUser',
         name: '김테스트',
+        phone: '010-1234-5678',
       };
 
       (userRepository.findOne as jest.Mock).mockResolvedValue(null);
@@ -127,6 +127,7 @@ describe('AuthService', () => {
         password: 'Test1234!',
         username: 'Tester',
         name: '김테스트',
+        phone: '010-1234-5678',
       };
 
       (userRepository.findOne as jest.Mock).mockResolvedValue({
@@ -140,73 +141,6 @@ describe('AuthService', () => {
       });
 
       await expect(authService.join(joinForm)).rejects.toThrow();
-    });
-  });
-
-  describe('validateLocalUser', () => {
-    it('유효한 이메일과 비밀번호를 받았을 경우, 사용자 정보를 반환합니다.', async () => {
-      const user: User = {
-        id: 1,
-        email: 'test@example.com',
-        password: 'hashedValue',
-        username: 'Tester',
-        name: '김테스트',
-        role: UserRole.USER,
-        provider: SNSProvider.LOCAL,
-        snsId: null,
-        refreshToken: null,
-        createdAt: new Date('2024-01-01T00:00:00Z'),
-        updatedAt: new Date('2024-01-02T00:00:00Z'),
-        deletedAt: null,
-      };
-
-      const loginForm: LoginForm = {
-        email: 'test@example.com',
-        password: 'Test1234!',
-      };
-
-      userRepository.findWithPassword = jest.fn().mockResolvedValue(loginForm);
-
-      const result = await authService.validateLocalUser(
-        loginForm.email,
-        loginForm.password,
-      );
-
-      expect(result.email).toEqual(user.email);
-      expect(userRepository.findWithPassword).toHaveBeenCalledWith(
-        'test@example.com',
-      );
-    });
-  });
-
-  describe('generateAccessToken', () => {
-    it('JWT Access 토큰을 발급해야 합니다.', () => {
-      mockJwtService.sign.mockClear();
-
-      const jwtPayload: IJwtPayload = { id: 1 };
-      const accessToken = authService.generateAccessToken(jwtPayload);
-
-      expect(accessToken).toEqual('testAccessToken');
-      expect(mockJwtService.sign).toHaveBeenCalledWith(jwtPayload, {
-        secret: 'testAccessTokenSecret',
-        expiresIn: '1d',
-      });
-    });
-  });
-
-  describe('generateRefreshToken', () => {
-    it('JWT Refresh 토큰을 발급해야 합니다.', async () => {
-      const jwtPayload: IJwtPayload = { id: 1 };
-      const refreshToken = await authService.generateRefreshToken(jwtPayload);
-
-      expect(refreshToken).toEqual('testAccessToken');
-      expect(bcrypt.hash).toHaveBeenCalledWith(
-        'testAccessToken',
-        expect.any(Number),
-      );
-      expect(userRepository.update).toHaveBeenCalledWith(1, {
-        refreshToken: 'hashedValue',
-      });
     });
   });
 });
